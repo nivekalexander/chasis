@@ -1,15 +1,31 @@
 const express = require('express');
-const fs = require('fs');
+const cors = require('cors'); // 🔹 Importamos CORS
 const app = express();
 const PORT = 3000;
 
-app.get('/microfrontends', (req, res) => {
-  const homeConfig = JSON.parse(fs.readFileSync('../home/lib/microfrontend_config.json'));
-  const loginConfig = JSON.parse(fs.readFileSync('../login/lib/microfrontend_config.json'));
+// 🔹 Habilitar CORS para todas las solicitudes
+app.use(cors());
 
-  res.json([homeConfig, loginConfig]);
+// Definimos los microfrontends simulando AWS
+const microfrontends = [
+  {
+    name: "home",
+    path: "/home",
+    url: "https://nivekalexander.github.io/home/"
+  },
+  {
+    name: "login",
+    path: "/login",
+    url: "https://nivekalexander.github.io/login/"
+  }
+];
+
+// Endpoint que devuelve la configuración de los microfrontends
+app.get('/microfrontends', (req, res) => {
+  res.json(microfrontends);
 });
 
+// Iniciar el servidor en el puerto 3000
 app.listen(PORT, () => {
-  console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor ejecutándose en http://localhost:${PORT}`);
 });

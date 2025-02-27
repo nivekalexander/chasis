@@ -1,27 +1,38 @@
+import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class MicrofrontendLoader {
   static Future<List<GoRoute>> loadMicrofrontends() async {
-    final response =
-        await http.get(Uri.parse('http://localhost:3000/microfrontends'));
+    final dio = Dio();
+    try {
+      final response = await dio.get('http://localhost:3000/microfrontends');
+      final List<dynamic> microfrontends = response.data;
 
-    if (response.statusCode == 200) {
-      final List<dynamic> microfrontends = jsonDecode(response.body);
       return microfrontends
           .map((mf) => GoRoute(
                 path: mf['path'],
-                builder: (context, state) => _dynamicLoader(mf['url']),
+                builder: (context, state) => WebViewLoader(url: mf['url']),
               ))
           .toList();
-    } else {
-      throw Exception('Error al cargar microfrontends');
+    } catch (e) {
+      throw Exception('Error al cargar microfrontends: $e');
     }
   }
+}
 
-  static Widget _dynamicLoader(String url) {
-    return Scaffold(body: Center(child: Text('Cargando desde $url...')));
+class WebViewLoader extends StatelessWidget {
+  final String url;
+
+  const WebViewLoader({required this.url, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Microfrontend")),
+      body: Center(
+        child: Text("Cargando microfrontend desde $url..."),
+      ),
+    );
   }
 }
