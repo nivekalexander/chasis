@@ -1,6 +1,6 @@
 name: chasis
-description: Chasis orquestador de microfrontends en Flutter.
-publish_to: 'none'
+description: Orquestador de microfrontends en Flutter.
+publish_to: 'none' # Este paquete no se publicará
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -8,17 +8,49 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  go_router: ^10.2.0  # Manejo de navegación desacoplada
-  dio: ^5.4.0         # Cliente HTTP avanzado para llamadas a microfrontends
-  provider: ^6.0.5    # Manejo de estado global para autenticación
-  json_annotation: ^4.8.1 # Para manejar respuestas JSON
+
+  # 🔹 Manejo de rutas desacopladas
+  go_router: ^10.2.0  
+
+  # 🔹 Cliente HTTP para comunicación con microfrontends
+  dio: ^5.4.0
+  http: ^0.13.6  # Necesario si aún hay referencias a `http` en el código
+
+  # 🔹 Manejo de estado
+  flutter_bloc: ^8.1.3
+  provider: ^6.0.5
+
+  # 🔹 Manejo de JSON
+  json_annotation: ^4.8.1
+
+  # 🔹 Almacenamiento seguro
+  flutter_secure_storage: ^9.2.0
+  shared_preferences: ^2.2.2
+
+  # 🔹 Firebase (opcional para autenticación)
+  firebase_auth: ^4.15.3
+  firebase_core: ^2.24.2
+
+  # 🔹 WebView (para microfrontends que usen WebView)
+  webview_flutter: ^4.7.0
+
+  # 🔹 Registro de logs
+  logger: ^2.0.2+1
+
+  # 🔹 Inyección de dependencias
+  get_it: ^7.6.0
+
+  # 🔹 Comparación eficiente de estados en Bloc
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
-  build_runner: ^2.4.4  # Para generar código (si se usa con json_serializable)
-  json_serializable: ^6.7.1 # Para manejar JSON de forma automática
+
+  # 🔹 Generación de código para JSON
+  build_runner: ^2.4.4
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true

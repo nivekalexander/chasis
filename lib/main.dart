@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:chasis/services/microfrontend_loader.dart';
+import 'package:chasis/core/services/microfrontend_loader.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

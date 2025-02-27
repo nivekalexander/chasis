@@ -5,6 +5,6 @@ import 'package:chasis/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Construir la app y activar un frame.
-    await tester.pumpWidget(ChasisApp());
+    await tester.pumpWidget(MyApp(routes: []));
   });
 }
