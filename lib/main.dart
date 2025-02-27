@@ -8,14 +8,15 @@ void main() async {
       await MicrofrontendLoader.loadMicrofrontends();
 
   final router = GoRouter(
-    initialLocation: '/home', // Asegura que carga la pantalla inicial
+    initialLocation: '/',
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) =>
-            const Scaffold(body: Center(child: Text('Bienvenido al Chasis'))),
+        builder: (context, state) => const Scaffold(
+          body: Center(child: Text('Bienvenido al Chasis')),
+        ),
       ),
-      ...microfrontendsRoutes, // 🔹 Agrega dinámicamente las rutas obtenidas del servidor
+      ...microfrontendsRoutes, // 🔹 Agrega las rutas dinámicamente
     ],
   );
 

@@ -1,6 +1,8 @@
-import 'package:dio/dio.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:dio/dio.dart';
+import 'webview_loader.dart'; // 🔹 Asegúrate de importar WebViewLoader
 
 class MicrofrontendLoader {
   static Future<List<GoRoute>> loadMicrofrontends() async {
@@ -18,21 +20,5 @@ class MicrofrontendLoader {
     } catch (e) {
       throw Exception('Error al cargar microfrontends: $e');
     }
-  }
-}
-
-class WebViewLoader extends StatelessWidget {
-  final String url;
-
-  const WebViewLoader({required this.url, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Microfrontend")),
-      body: Center(
-        child: Text("Cargando microfrontend desde $url..."),
-      ),
-    );
   }
 }
