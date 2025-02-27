@@ -1,34 +1,53 @@
 name: chasis
 description: Orquestador de microfrontends en Flutter.
-
-publish_to: 'none' # 🔧 No se publica, ya que orquesta los microfrontends.
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.19.0 <3.0.0"
-  flutter: ">=3.29.0"
+  sdk: ">=3.3.0 <4.0.0" # Versión de Dart compatible con Flutter 3.3+
 
 dependencies:
   flutter:
     sdk: flutter
 
-  # 📌 🔄 Manejo de estado con BLoC
-  flutter_bloc: ^8.1.3  
+  # WebView para cargar microfrontends
+  webview_flutter: ^4.7.0
+  webview_flutter_web: ^0.2.2
+  webview_flutter_wkwebview: ^3.0.4
 
-  # 📌 🌍 Navegación con `go_router`
-  go_router: ^10.1.2  # 📌 Mantener actualizado para compatibilidad.
+  # Manejo de estado con Provider
+  provider: ^6.1.2 # Se usa la última versión estable y compatible
 
-  # 📌 📡 Cliente HTTP para comunicarse con `home` y `login`
-  dio: ^5.3.2           
+  # HTTP para peticiones a APIs de los microfrontends
+  http: ^1.2.0
 
-  # 📌 🔐 Almacenamiento seguro de datos compartidos
-  flutter_secure_storage: ^8.0.0  
+  # Firebase (opcional, si se usa autenticación o almacenamiento)
+  firebase_core: ^2.27.0
+  firebase_auth: ^4.17.0
+  cloud_firestore: ^4.15.0
+  firebase_storage: ^11.6.0
+
+  # Shared Preferences para almacenamiento local
+  shared_preferences: ^2.2.2
+
+  # Manejo de rutas con go_router
+  go_router: ^13.2.0
+
+  # Seguridad y encriptación
+  flutter_secure_storage: ^9.2.2
+
+  # Animaciones avanzadas
+  flutter_animate: ^4.3.0
+
+  # Logs y monitoreo
+  logger: ^2.0.2+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+
+  flutter_lints: ^3.0.1
 
 flutter:
   uses-material-design: true
