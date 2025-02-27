@@ -1,53 +1,24 @@
 name: chasis
-description: Orquestador de microfrontends en Flutter.
-publish_to: "none"
-
-version: 1.0.0+1
+description: Chasis orquestador de microfrontends en Flutter.
+publish_to: 'none'
 
 environment:
-  sdk: ">=3.3.0 <4.0.0" # Versión de Dart compatible con Flutter 3.3+
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-
-  # WebView para cargar microfrontends
-  webview_flutter: ^4.7.0
-  webview_flutter_web: ^0.2.2
-  webview_flutter_wkwebview: ^3.0.4
-
-  # Manejo de estado con Provider
-  provider: ^6.1.2 # Se usa la última versión estable y compatible
-
-  # HTTP para peticiones a APIs de los microfrontends
-  http: ^1.2.0
-
-  # Firebase (opcional, si se usa autenticación o almacenamiento)
-  firebase_core: ^2.27.0
-  firebase_auth: ^4.17.0
-  cloud_firestore: ^4.15.0
-  firebase_storage: ^11.6.0
-
-  # Shared Preferences para almacenamiento local
-  shared_preferences: ^2.2.2
-
-  # Manejo de rutas con go_router
-  go_router: ^13.2.0
-
-  # Seguridad y encriptación
-  flutter_secure_storage: ^9.2.2
-
-  # Animaciones avanzadas
-  flutter_animate: ^4.3.0
-
-  # Logs y monitoreo
-  logger: ^2.0.2+1
+  go_router: ^10.2.0  # Manejo de navegación desacoplada
+  dio: ^5.4.0         # Cliente HTTP avanzado para llamadas a microfrontends
+  provider: ^6.0.5    # Manejo de estado global para autenticación
+  json_annotation: ^4.8.1 # Para manejar respuestas JSON
 
 dev_dependencies:
+  flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
-
-  flutter_lints: ^3.0.1
+  build_runner: ^2.4.4  # Para generar código (si se usa con json_serializable)
+  json_serializable: ^6.7.1 # Para manejar JSON de forma automática
 
 flutter:
   uses-material-design: true
