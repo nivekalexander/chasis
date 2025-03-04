@@ -1,25 +1,18 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../utils/device_detector.dart';
+import '../config/config.dart';
 
 class ApiGateway {
-  static const String apiUrl =
-      "https://chasis-service.aws.com/api/microfrontend";
-
-  static Future<String> getMicrofrontendToShow() async {
-    String deviceType = DeviceDetector.getDeviceType();
-
-    final response = await http.post(
-      Uri.parse(apiUrl),
+  static Future<List<Map<String, String>>> getMicrofrontends() async {
+    final response = await http.get(
+      Uri.parse("${AppConfig.environment}/api/microfrontends"),
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"device": deviceType}),
     );
 
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      return data['microfrontend_url'];
+      return List<Map<String, String>>.from(jsonDecode(response.body));
     } else {
-      throw Exception("Error al obtener el microfrontend");
+      throw Exception("Error al obtener los microfrontends");
     }
   }
 }

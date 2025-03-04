@@ -1,0 +1,5 @@
+[
+    {"name": "login", "url": "http://localhost:3001"},
+    {"name": "home", "url": "http://localhost:3002"}
+  ]
+  

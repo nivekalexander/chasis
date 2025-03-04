@@ -1,61 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import '../../core/utils/device_detector.dart';
+import 'package:webview_flutter/webview_flutter.dart' as webview;
 
-class MicrofrontendLoader extends StatefulWidget {
+class MicrofrontendLoader extends StatelessWidget {
   final String url;
-  MicrofrontendLoader({required this.url});
+  final String microName;
+
+  const MicrofrontendLoader({
+    super.key,
+    required this.url,
+    required this.microName,
+  });
 
   @override
-  _MicrofrontendLoaderState createState() => _MicrofrontendLoaderState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(microName)),
+      body: WebViewWidget(url: url),
+    );
+  }
 }
 
-class _MicrofrontendLoaderState extends State<MicrofrontendLoader> {
-  late final WebViewController _controller;
+class WebViewWidget extends StatefulWidget {
+  final String url;
+
+  const WebViewWidget({super.key, required this.url});
+
+  @override
+  State<WebViewWidget> createState() => _WebViewWidgetState();
+}
+
+class _WebViewWidgetState extends State<WebViewWidget> {
+  late final webview.WebViewController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = WebViewController();
+    _controller = webview.WebViewController()
+      ..setJavaScriptMode(webview.JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse(widget.url));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (DeviceDetector.getDeviceType() == "web") {
-      return Scaffold(
-        body: HtmlWidget(
-          '''
-          <iframe src="${widget.url}" width="100%" height="100%" 
-          onload="window.addEventListener('message', (event) => {
-              if (event.data === 'goToMicro3') {
-                  window.location.href = 'https://chasis-service.aws.com/api/micro3';
-              } else if (event.data === 'goToMicro2') {
-                  window.location.href = 'https://chasis-service.aws.com/api/micro2';
-              }
-          });"></iframe>
-          ''',
-        ),
-      );
-    } else {
-      return Scaffold(
-        body: WebView(
-          initialUrl: widget.url,
-          javascriptMode: JavaScriptMode.unrestricted,
-          onWebViewCreated: (controller) {
-            _controller = controller;
-            _controller.runJavaScript("""
-              window.addEventListener('message', (event) => {
-                  if (event.data === 'goToMicro3') {
-                      window.location.href = 'https://chasis-service.aws.com/api/micro3';
-                  } else if (event.data === 'goToMicro2') {
-                      window.location.href = 'https://chasis-service.aws.com/api/micro2';
-                  }
-              });
-            """);
-          },
-        ),
-      );
-    }
+    return webview.WebViewWidget(controller: _controller);
   }
 }

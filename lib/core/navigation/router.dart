@@ -1,38 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../services/api_gateway.dart';
+import '../microfrontends/microfrontends_config.dart';
 import '../../features/microfrontend_loader/microfrontend_loader.dart';
 
-final GoRouter router = GoRouter(
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => FutureBuilder(
-        future: ApiGateway.getMicrofrontendToShow(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return ErrorScreen(message: snapshot.error.toString());
-          }
-          return MicrofrontendLoader(url: snapshot.data ?? '');
-        },
+Future<List<GoRoute>> dynamicRoutes = _generateDynamicRoutes();
+
+Future<GoRouter> getRouter() async {
+  final routes = await dynamicRoutes;
+  return GoRouter(
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const Center(
+          child: CircularProgressIndicator(),
+        ),
       ),
-    ),
-  ],
-);
+      ...routes,
+    ],
+  );
+}
 
-class ErrorScreen extends StatelessWidget {
-  final String message;
-  ErrorScreen({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text("Error: $message", style: TextStyle(color: Colors.red)),
+Future<List<GoRoute>> _generateDynamicRoutes() async {
+  final microfrontends = await MicrofrontendsConfig.fetchMicrofrontends();
+  return microfrontends.map((micro) {
+    return GoRoute(
+      path: "/${micro['name']}",
+      builder: (context, state) => MicrofrontendLoader(
+        url: micro['url'] ?? '',
+        microName: micro['name'] ?? '',
       ),
     );
-  }
+  }).toList();
 }
