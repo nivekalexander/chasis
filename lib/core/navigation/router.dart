@@ -3,32 +3,29 @@ import 'package:go_router/go_router.dart';
 import '../microfrontends/microfrontends_config.dart';
 import '../../features/microfrontend_loader/microfrontend_loader.dart';
 
-Future<List<GoRoute>> dynamicRoutes = _generateDynamicRoutes();
-
-Future<GoRouter> getRouter() async {
-  final routes = await dynamicRoutes;
-  return GoRouter(
+class AppRouter {
+  static final GoRouter router = GoRouter(
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const Center(
-          child: CircularProgressIndicator(),
+        builder: (context, state) => const Scaffold(
+          body: Center(child: Text("Bienvenido a Chasis")),
         ),
       ),
-      ...routes,
+      ..._generateDynamicRoutes(),
     ],
   );
-}
 
-Future<List<GoRoute>> _generateDynamicRoutes() async {
-  final microfrontends = await MicrofrontendsConfig.fetchMicrofrontends();
-  return microfrontends.map((micro) {
-    return GoRoute(
-      path: "/${micro['name']}",
-      builder: (context, state) => MicrofrontendLoader(
-        url: micro['url'] ?? '',
-        microName: micro['name'] ?? '',
-      ),
-    );
-  }).toList();
+  static List<GoRoute> _generateDynamicRoutes() {
+    final microfrontends = MicrofrontendsConfig.microfrontends;
+    return microfrontends.map((micro) {
+      return GoRoute(
+        path: "/${micro['name']}",
+        builder: (context, state) => MicrofrontendLoader(
+          url: micro['url'] ?? '',
+          microName: micro['name'] ?? '',
+        ),
+      );
+    }).toList();
+  }
 }
