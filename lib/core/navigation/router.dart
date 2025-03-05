@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../microfrontends/microfrontends_config.dart';
 import '../../features/microfrontend_loader/microfrontend_loader.dart';
+import '../layout/chasis_layout.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -21,9 +22,11 @@ class AppRouter {
     return microfrontends.map((micro) {
       return GoRoute(
         path: "/${micro['name']}",
-        builder: (context, state) => MicrofrontendLoader(
-          url: micro['url'] ?? '',
-          microName: micro['name'] ?? '',
+        builder: (context, state) => ChasisLayout(
+          child: MicrofrontendLoader(
+            url: micro['url'] ?? '',
+            microName: micro['name'] ?? '',
+          ),
         ),
       );
     }).toList();

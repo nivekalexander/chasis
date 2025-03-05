@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      routerConfig: AppRouter.router, // Usa el GoRouter corregido
+      routerConfig: AppRouter.router, // Usa el router corregido
     );
   }
 }

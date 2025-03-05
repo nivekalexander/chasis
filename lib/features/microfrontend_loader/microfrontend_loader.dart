@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class MicrofrontendLoader extends StatefulWidget {
   final String url;
@@ -19,16 +20,23 @@ class _MicrofrontendLoaderState extends State<MicrofrontendLoader> {
   @override
   void initState() {
     super.initState();
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(widget.url));
+    if (!kIsWeb) {
+      _controller = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..loadRequest(Uri.parse(widget.url));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.microName)),
-      body: WebViewWidget(controller: _controller),
+      body: kIsWeb
+          ? Center(
+              child: HtmlElementView(viewType: widget.url), // Usa iframe en Web
+            )
+          : WebViewWidget(
+              controller: _controller), // Usa WebView en móvil/desktop
     );
   }
 }
